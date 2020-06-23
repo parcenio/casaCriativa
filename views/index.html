@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Casa Criativa</title>
+{% extends "layout.html" %}
 
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+{% block content %}
 
-</head>
-<body>
-
-  <div id="container">
     <section id="intro">
 
       <header>
@@ -42,118 +32,14 @@
 
       </section>
 
-      <footer>
-        Com ❤ <a href="http://rocketseat.com.br" target="_blank">Rocketseat</a>
-      </footer>
+      {% include "footer.html" %}
+
     </section>
 
     <section id="last-ideas">
 
-      <div class="idea">
-
-        <img 
-        src="https://image.flaticon.com/icons/svg/2729/2729007.svg" 
-        alt="Imagem Curso de Programação"
-        >
-
-        <div class="content">
-          <h3>Cursos de Programação</h3>
-          <p>Estudo</p>
-          <div class="description">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates nihil quae, modi iusto non, unde vitae inventore omnis blanditiis fuga in consectetur pariatur doloribus. Corporis recusandae quam inventore officia ea?
-          </div>
-          <a href="#">Ir para a ideia</a>
-        </div>
-
-      </div>
-
-      <div class="idea">
-
-        <img 
-        src="https://image.flaticon.com/icons/svg/2729/2729005.svg" 
-        alt="Imagem Exercícios"
-        >
-
-        <div class="content">
-          <h3>Exercícios</h3>
-          <p>Saúde</p>
-          <div class="description">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates nihil quae, modi iusto non, unde vitae inventore omnis blanditiis fuga in consectetur pariatur doloribus. Corporis recusandae quam inventore officia ea?
-          </div>
-          <a href="#">Ir para a ideia</a>
-        </div>
-
-      </div>
-
-      <div class="idea">
-
-        <img 
-        src="https://image.flaticon.com/icons/svg/2729/2729027.svg" 
-        alt="Imagem Meditação"
-        >
-
-        <div class="content">
-          <h3>Meditação</h3>
-          <p>Mentalidade</p>
-          <div class="description">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates nihil quae, modi iusto non, unde vitae inventore omnis blanditiis fuga in consectetur pariatur doloribus. Corporis recusandae quam inventore officia ea?
-          </div>
-          <a href="#">Ir para a ideia</a>
-        </div>
-
-      </div>
+     {% include "all_ideas.html" %}
 
     </section>
 
-  </div>
-  
-  <div id="modal" class="hide">
-
-    <div class="content">
-
-      <h1>Nova Ideia</h1>
-
-      <form action="">
-
-        <div class="input-wrapper">
-
-          <label for="title">Título da Ideia</label>
-          <input type="text" name="title">
-
-        </div>
-
-        <div class="input-wrapper">
-          <label for="category">Categoria</label>
-          <input type="text" name="category">
-        </div>
-
-        <div class="input-wrapper">
-          <label for="image">Link da Imagem</label>
-          <input type="url" name="link">
-        </div>
-
-        <div class="input-wrapper">
-          <label for="description">Descrição da Ideia</label>
-          <textarea name="description" cols="30" rows="5"></textarea>
-        </div>
-
-        <div class="input-wrapper">
-          <label for="link">Link da ideia</label>
-          <input type="url" name="link">
-        </div>        
-
-        <a href="#" onclick="onOff()">Voltar</a>
-        <button>Salvar</button>
-
-      </form>
-
-    </div>
-
-
-  </div>
-
-
-
-  <script src="scripts.js"></script>
-</body>
-</html>
+    {% endblock %}
