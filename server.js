@@ -2,9 +2,10 @@
 const express = require("express")
 const { dirname } = require("path")
 const server = express()
+const db = require("./db")
 
 // variável que armazena as ideias
-const ideas = [
+/*const ideas = [
   {
     imagem:"https://image.flaticon.com/icons/svg/2729/2729007.svg",
     title:"Cursos de Programação",
@@ -48,7 +49,7 @@ const ideas = [
     url:"https://rocketseat.com.br"
   },
 
-]
+]*/
 
 
 
@@ -67,16 +68,22 @@ nunjucks.configure("views", {
 // criando uma rota "/", captura o pedido do cliente para responder
 server.get("/",function (req, res){
   
-  const  reversedIdeas = [...ideas].reverse()
+  db.all(`SELECT * FROM ideas`,function(err,rows){
+    if (err) return console.log(err)
 
-  let lastIdeas = []
-  for (let idea of reversedIdeas){
-    if (lastIdeas.length < 2){
-      lastIdeas.push(idea)
-    }
-  }
+      const  reversedIdeas = [...rows].reverse()
 
-  return res.render("index.html",{ideas: lastIdeas})
+        let lastIdeas = []
+        for (let idea of reversedIdeas){
+          if (lastIdeas.length < 2){
+            lastIdeas.push(idea)
+          }
+      }
+
+      return res.render("index.html",{ideas: lastIdeas})
+  })
+
+  
 })
 
 server.get("/ideias",function (req, res){
