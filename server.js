@@ -4,57 +4,12 @@ const { dirname } = require("path")
 const server = express()
 const db = require("./db")
 
-// variável que armazena as ideias
-/*const ideas = [
-  {
-    imagem:"https://image.flaticon.com/icons/svg/2729/2729007.svg",
-    title:"Cursos de Programação",
-    category:"Estudo",
-    description:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates nihil quae, modi iusto non, unde vitae inventore omnis blanditiis fuga in consectetur",
-    url:"https://rocketseat.com.br"
-  },
-  {
-    imagem:"https://image.flaticon.com/icons/svg/2729/2729005.svg",
-    title:"Exercícios",
-    category:"Saúde",
-    description:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates nihil quae, modi iusto non, unde vitae inventore omnis blanditiis fuga in consectetur",
-    url:"https://rocketseat.com.br"
-  },
-  {
-    imagem:"https://image.flaticon.com/icons/svg/2729/2729027.svg",
-    title:"Meditação",
-    category:"Mentalidade",
-    description:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates nihil quae, modi iusto non, unde vitae inventore omnis blanditiis fuga in consectetur",
-    url:"https://rocketseat.com.br"
-  },
-  {
-    imagem:"https://image.flaticon.com/icons/svg/2729/2729076.svg",
-    title:"Maratonar Séries",
-    category:"Lazer",
-    description:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates nihil quae, modi iusto non, unde vitae inventore omnis blanditiis fuga in consectetur",
-    url:"https://rocketseat.com.br"
-  },
-  {
-    imagem:"https://image.flaticon.com/icons/svg/2729/2729021.svg",
-    title:"Jogar Vídeo-game",
-    category:"Lazer",
-    description:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates nihil quae, modi iusto non, unde vitae inventore omnis blanditiis fuga in consectetur",
-    url:"https://rocketseat.com.br"
-  },
-  {
-    imagem:"https://image.flaticon.com/icons/svg/2729/2729038.svg",
-    title:"Pintura",
-    category:"Criatividade",
-    description:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates nihil quae, modi iusto non, unde vitae inventore omnis blanditiis fuga in consectetur",
-    url:"https://rocketseat.com.br"
-  },
-
-]*/
-
-
 
 // configurar arquivos estáticos (css, scripts, imagens)
 server.use(express.static("public"))
+
+//habilitando o red.body
+server.use(express.urlencoded({extended: true}))
 
 //configuração nunjucks ( responsável por permitir usar variáveis no html)
 
@@ -69,7 +24,10 @@ nunjucks.configure("views", {
 server.get("/",function (req, res){
   
   db.all(`SELECT * FROM ideas`,function(err,rows){
-    if (err) return console.log(err)
+    if (err) {
+      console.log(err)
+      return res.send("ERRO NO BANCO DE DADOS")
+    }
 
       const  reversedIdeas = [...rows].reverse()
 
@@ -88,10 +46,49 @@ server.get("/",function (req, res){
 
 server.get("/ideias",function (req, res){
 
-  const  reversedIdeas = [...ideas].reverse()
+  db.all(`SELECT * FROM ideas`,function(err,rows){
+    if (err) {
+      console.log(err)
+      return res.send("ERRO NO BANCO DE DADOS")
+    }
 
-  return res.render("ideias.html", { ideas: reversedIdeas})
+      const  reversedIdeas = [...rows].reverse()
+
+      return res.render("ideias.html", { ideas: reversedIdeas})
+
+  })
+
 })
 
+// ler os dados inseridos e publica com o método POST
+server.post("/", function(req,res){
+  //INSERIR DADOS
+    const query = `
+    INSERT INTO ideas(
+      image,
+      title,
+      category,
+      description,
+      url
+    ) VALUES(?,?,?,?,?);
+    `
+    const values = [
+      req.body.image,
+      req.body.title,
+      req.body.category,
+      req.body.description,
+      req.body.url
+
+    ]
+    db.run(query,values,function(err){
+      if (err) {
+        console.log(err)
+        return res.send("ERRO NO BANCO DE DADOS")
+      }
+
+      return res.redirect("/ideias")
+
+    })
+})
 // ligando servidor na porta 3000
 server.listen(3000)

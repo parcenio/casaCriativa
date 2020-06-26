@@ -10,9 +10,9 @@ db.serialize(function() {
     CREATE TABLE IF NOT EXISTS ideas(
 
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      image TEXT,
       title TEXT,
       category TEXT,
+      image TEXT,
       description TEXT,
       url TEXT
 
